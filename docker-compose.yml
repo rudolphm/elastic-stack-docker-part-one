@@ -9,8 +9,7 @@ volumes:
     driver: local
 
 networks:
-  default:
-    name: elastic
+  - traefik-public
     external: false
 
 services:
@@ -123,6 +122,14 @@ services:
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
+    deploy:
+      labels:
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.seq.rule=Host(`srh.srhdashboard.saunyama.cloud`)'
+        - 'traefik.http.services.seq.loadbalancer.server.port=5601'
+        - 'traefik.http.routers.seq.entrypoints=websecure'
+        - 'traefik.http.routers.seq.tls=true'
+        - 'traefik.http.routers.seq.tls.certresolver=leresolver'
     ports:
       - ${KIBANA_PORT}:5601
     environment:
