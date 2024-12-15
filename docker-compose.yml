@@ -10,7 +10,6 @@ volumes:
 
 networks:
   - traefik-public
-    external: false
 
 services:
   setup:
